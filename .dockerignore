@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# CI
+Jenkinsfile
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+.venv
+venv
+env
+.env
+*.egg-info
+dist
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Node
+node_modules
+.next
+out
+.turbo
+
+# dbt
+dbt/target
+dbt/logs
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Data (large files)
+data/
+*.duckdb
+*.duckdb.wal
+
+# OS
+.DS_Store
+Thumbs.db
