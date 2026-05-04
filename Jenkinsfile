@@ -34,14 +34,15 @@ pipeline {
 
         stage('Lint — Python') {
             steps {
+                sh 'pip3 install -q ruff 2>/dev/null || pip install -q ruff'
                 script {
                     def dirs = ['api', 'ingest/batch', 'ingest/stream']
                     dirs.each { dir ->
                         if (fileExists("${dir}/requirements.txt")) {
-                            sh """
-                                pip3 install -q ruff 2>/dev/null || pip install -q ruff
-                                ruff check ${dir}/ || true
-                            """
+                            def status = sh(script: "ruff check ${dir}", returnStatus: true)
+                            if (status != 0) {
+                                echo "ruff found ${status} issues in ${dir} (non-blocking)"
+                            }
                         }
                     }
                 }
@@ -52,7 +53,7 @@ pipeline {
             steps {
                 dir('web') {
                     sh 'npm ci'
-                    sh 'npx tsc --noEmit || true'
+                    sh(script: 'npx tsc --noEmit', returnStatus: true)
                 }
             }
         }
