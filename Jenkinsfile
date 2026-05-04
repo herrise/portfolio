@@ -123,20 +123,22 @@ pipeline {
                 branch 'main'
             }
             steps {
-                if (env.DEPLOY_TARGET == 'localhost') {
-                    sh '''
-                        docker compose down || true
-                        docker compose up -d --build
-                    '''
-                } else {
-                    sh """
-                        scp docker-compose.yml ${DEPLOY_TARGET}:~/portfolio/
-                        ssh ${DEPLOY_TARGET} '
-                            cd ~/portfolio &&
-                            docker compose pull &&
-                            docker compose up -d --remove-orphans
-                        '
-                    """
+                script {
+                    if (env.DEPLOY_TARGET == 'localhost') {
+                        sh '''
+                            docker compose down || true
+                            docker compose up -d --build
+                        '''
+                    } else {
+                        sh """
+                            scp docker-compose.yml ${DEPLOY_TARGET}:~/portfolio/
+                            ssh ${DEPLOY_TARGET} '
+                                cd ~/portfolio &&
+                                docker compose pull &&
+                                docker compose up -d --remove-orphans
+                            '
+                        """
+                    }
                 }
 
                 retry(3) {
