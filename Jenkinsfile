@@ -131,7 +131,7 @@ PYEOF
 
         stage('Deploy') {
             when {
-                branch 'main'
+                expression { return env.BRANCH_NAME == 'main' || env.BRANCH_NAME == null }
             }
             steps {
                 script {
