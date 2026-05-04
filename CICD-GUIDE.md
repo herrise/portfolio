@@ -403,6 +403,21 @@ Avoid curl-based job creation unless you handle crumbs + session cookies.
 **Symptom:** `docker: command not found`
 **Fix:** `apt-get install -y docker.io` in the Jenkins container.
 
+### 9. `next build` fails — ESLint missing
+**Symptom:** `⨯ ESLint must be installed in order to run during builds`
+**Fix:** Add `eslint` and `eslint-config-next` to devDependencies in web/package.json.
+
+### 10. Custom eslint rules need @typescript-eslint plugin
+**Symptom:** `Error: Definition for rule '@typescript-eslint/no-unused-vars' was not found`
+**Fix:** Remove custom rules from `.eslintrc.json` — `next/core-web-vitals` already covers them.
+```json
+{ "extends": "next/core-web-vitals" }
+```
+
+### 11. Docker build cache hides Dockerfile changes
+**Symptom:** `COPY --from=base /app/public ./public` fails with "not found" despite `mkdir -p`.
+**Fix:** Add `--no-cache` to the web image build step. Next.js Docker builds are sensitive to stale caches, especially when the `public/` directory doesn't exist on the host.
+
 ---
 
 ## How the Routing Works
