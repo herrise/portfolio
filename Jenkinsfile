@@ -143,7 +143,7 @@ pipeline {
 
                 retry(3) {
                     sleep(time: 10, unit: 'SECONDS')
-                    sh 'curl -sf http://localhost:8000/health || exit 1'
+                    sh 'curl -sf http://172.17.0.1:8000/health || exit 1'
                 }
 
                 echo '🚀 Deploy complete'
