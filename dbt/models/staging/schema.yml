@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: main
+    schema: main
+    tables:
+      - name: _raw_prices
+        loaded_at_field: ingested_at
+        freshness:
+          warn_after: {count: 30, period: minute}
+          error_after: {count: 60, period: minute}
+
+models:
+  - name: stg_prices
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+      - name: price_usd
+        tests:
+          - not_null
+  - name: stg_tickers
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+      - name: ticker_sk
+        tests:
+          - not_null
+          - unique

@@ -1,0 +1,6 @@
+duckdb_profile:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: /app/data/pipeline.duckdb

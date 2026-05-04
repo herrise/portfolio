@@ -1,0 +1,4 @@
+redis==5.0.1
+requests==2.31.0
+duckdb==0.10.2
+apscheduler==3.10.4

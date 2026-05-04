@@ -1,0 +1,13 @@
+name: "crypto_pipeline"
+version: "1.0"
+profile: "duckdb_profile"
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+models:
+  crypto_pipeline:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

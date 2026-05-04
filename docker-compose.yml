@@ -1,0 +1,64 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --notify-keyspace-events Ex
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 3
+
+  stream-ingest:
+    build: ./ingest/stream
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - POLL_INTERVAL=2
+    restart: unless-stopped
+
+  batch-ingest:
+    build: ./ingest/batch
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - BATCH_INTERVAL_MINUTES=5
+    volumes:
+      - duckdb_data:/app/data
+      - ./dbt:/app/dbt
+    restart: unless-stopped
+
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DUCKDB_PATH=/app/data/pipeline.duckdb
+    volumes:
+      - duckdb_data:/app/data
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:8000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000
+    restart: unless-stopped
+
+volumes:
+  duckdb_data:

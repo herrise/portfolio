@@ -1,0 +1,35 @@
+# DuckDB
+*.duckdb
+*.duckdb.wal
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+*.egg
+
+# Node
+node_modules/
+.next/
+out/
+
+# Docker
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
