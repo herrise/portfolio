@@ -34,7 +34,7 @@ pipeline {
 
         stage('Lint — Python') {
             steps {
-                sh 'pip3 install -q ruff 2>/dev/null || pip install -q ruff'
+                sh 'pip3 install -q --break-system-packages ruff'
                 script {
                     def dirs = ['api', 'ingest/batch', 'ingest/stream']
                     dirs.each { dir ->
@@ -61,7 +61,7 @@ pipeline {
         stage('Test — dbt Compile') {
             steps {
                 dir('dbt') {
-                    sh 'pip3 install -q dbt-duckdb 2>/dev/null || pip install -q dbt-duckdb'
+                    sh 'pip3 install -q --break-system-packages dbt-duckdb'
                     sh 'dbt compile'
                 }
             }
