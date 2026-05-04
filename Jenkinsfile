@@ -96,7 +96,7 @@ PYEOF
                 stage('web') {
                     steps {
                         dir('web') {
-                            sh "docker build -t portfolio-web:${GIT_COMMIT_SHORT} -t portfolio-web:latest ."
+                            sh "docker build --no-cache -t portfolio-web:${GIT_COMMIT_SHORT} -t portfolio-web:latest ."
                         }
                     }
                 }
