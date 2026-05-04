@@ -52,7 +52,7 @@ pipeline {
         stage('Lint — TypeScript') {
             steps {
                 dir('web') {
-                    sh 'npm ci'
+                    sh(script: 'npm install', returnStatus: true)
                     sh(script: 'npx tsc --noEmit', returnStatus: true)
                 }
             }
