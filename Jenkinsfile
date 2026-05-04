@@ -138,7 +138,7 @@ PYEOF
                     if (env.DEPLOY_TARGET == 'localhost') {
                         sh '''
                             docker compose down || true
-                            docker compose up -d --build
+                            docker compose up -d
                         '''
                     } else {
                         sh """
