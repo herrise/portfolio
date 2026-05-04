@@ -63,7 +63,11 @@ pipeline {
                 dir('dbt') {
                     sh 'pip3 install -q --break-system-packages dbt-duckdb'
                     // Create the duckdb path expected by profiles.yml (CI doesn't have the container volume)
-                    sh '''mkdir -p /app/data && python3 -c "import duckdb; duckdb.connect('/app/data/pipeline.duckdb').close()"'''
+                    sh '''mkdir -p /app/data
+                    python3 << 'PYEOF'
+import duckdb
+duckdb.connect('/app/data/pipeline.duckdb').close()
+PYEOF'''
                     sh 'dbt compile'
                 }
             }
